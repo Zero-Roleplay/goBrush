@@ -1,38 +1,30 @@
 /*
- *                              ____                 _
- *                             |  _ \               | |
- *                   __ _  ___ | |_) |_ __ _   _ ___| |__
- *                  / _` |/ _ \|  _ <| '__| | | / __| '_ \
- *                 | (_| | (_) | |_) | |  | |_| \__ \ | | |
- *                  \__, |\___/|____/|_|   \__,_|___/_| |_|
- *                   __/ |
- *                  |___/
+ * goBrush is designed to streamline and simplify your mountain building experience.
+ * Copyright (C) Arcaniax-Development
+ * Copyright (C) Arcaniax team and contributors
  *
- *    goBrush is designed to streamline and simplify your mountain building experience.
- *                            Copyright (C) 2021 Arcaniax
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.arcaniax.gobrush.util;
 
 import com.arcaniax.gobrush.Session;
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.bukkit.BukkitPlayer;
-import com.sk89q.worldedit.math.Vector3;
 import com.arcaniax.gobrush.object.BrushPlayer;
+import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.math.Vector3;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -46,19 +38,34 @@ public class BrushPlayerUtil {
 
     public static Location getClosest(Player player, Location _loc, Location l, int brushSize, EditSession session) {
         Location loc = _loc.clone();
+        Location locPrev = loc.clone();
 
-        while (loc.getBlock().getType() == XMaterial.AIR.parseMaterial()
-                || (!(session.getMask() == null || session.getMask().test(Vector3.at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()).toBlockPoint())))
+        Block locBlock = loc.getBlock();
+        Material locMaterial = locBlock.getType();
+        Material air = XMaterial.AIR.parseMaterial();
+        Vector v = player.getEyeLocation().getDirection().multiply(0.5);
+
+        while (locMaterial == air
+                || (!(session.getMask() == null || session.getMask().test(Vector3
+                .at(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())
+                .toBlockPoint())))
                 && (loc.distance(l.clone().add(0.5, 0.5, 0.5)) < ((double) brushSize / (double) 4))) {
-            Vector v = player.getEyeLocation().getDirection();
-            loc.add(v.multiply(0.5));
-            if (!BlockUtils.isLoaded(loc)) {
+            loc.add(v);
+            boolean newBlockPos =
+                    (loc.getBlockX() != locPrev.getBlockX() || loc.getBlockY() != locPrev.getBlockY() || loc.getBlockZ() != locPrev.getBlockZ());
+            if (newBlockPos) {
+                locBlock = loc.getBlock();
+                locMaterial = locBlock.getType();
+            }
+            locPrev = loc.clone();
+
+            if (newBlockPos && !BlockUtils.isLoaded(loc)) {
                 return null;
             }
-            if (loc.getBlockY() <= 0) {
-               break;
+            if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
+                break;
             }
-            if (loc.getBlockY() > 255) {
+            if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
                 return null;
             }
             if (loc.distance(_loc) > 200) {
@@ -76,10 +83,10 @@ public class BrushPlayerUtil {
             if (!BlockUtils.isLoaded(loc)) {
                 return null;
             }
-            if (loc.getBlockY() <= 0) {
+            if (loc.getBlockY() <= BlockUtils.getWorldMin(loc)) {
                 break;
             }
-            if (loc.getBlockY() > 255) {
+            if (loc.getBlockY() > BlockUtils.getWorldMax(loc)) {
                 return null;
             }
             if (loc.distance(player.getEyeLocation()) > 200) {
@@ -167,4 +174,5 @@ public class BrushPlayerUtil {
         return height;
 
     }
+
 }

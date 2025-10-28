@@ -1,28 +1,20 @@
 /*
- *                              ____                 _
- *                             |  _ \               | |
- *                   __ _  ___ | |_) |_ __ _   _ ___| |__
- *                  / _` |/ _ \|  _ <| '__| | | / __| '_ \
- *                 | (_| | (_) | |_) | |  | |_| \__ \ | | |
- *                  \__, |\___/|____/|_|   \__,_|___/_| |_|
- *                   __/ |
- *                  |___/
+ * goBrush is designed to streamline and simplify your mountain building experience.
+ * Copyright (C) Arcaniax-Development
+ * Copyright (C) Arcaniax team and contributors
  *
- *    goBrush is designed to streamline and simplify your mountain building experience.
- *                            Copyright (C) 2021 Arcaniax
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.arcaniax.gobrush.util;
 
@@ -40,6 +32,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 
 public class BrushZipManager {
+
     private static int amountOfValidBrushes;
 
     public static void setupBrushes() {
@@ -47,8 +40,11 @@ public class BrushZipManager {
             amountOfValidBrushes = Session.initializeValidBrushes();
             if (amountOfValidBrushes == 0) {
                 GoBrushPlugin.getPlugin().getLogger().log(Level.INFO, "Downloading brushes from GitHub, please wait...");
-                try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new URL("https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true").openStream());
-                     FileOutputStream fileOutputStream = new FileOutputStream(GoBrushPlugin.getPlugin().getDataFolder() + "/brushes/brushes.zip")) {
+                try (BufferedInputStream bufferedInputStream = new BufferedInputStream(new URL(
+                        "https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true").openStream());
+                     FileOutputStream fileOutputStream = new FileOutputStream(GoBrushPlugin
+                             .getPlugin()
+                             .getDataFolder() + "/brushes/brushes.zip")) {
                     byte[] dataBuffer = new byte[1024];
                     int bytesRead;
                     while ((bytesRead = bufferedInputStream.read(dataBuffer, 0, 1024)) != -1) {
@@ -71,18 +67,34 @@ public class BrushZipManager {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        GoBrushPlugin.getPlugin().getLogger().log(Level.INFO, "Registered {0} brushes. We are all set!", amountOfValidBrushes);
+                        GoBrushPlugin.getPlugin().getLogger().log(
+                                Level.INFO,
+                                "Registered {0} brushes. We are all set!",
+                                amountOfValidBrushes
+                        );
                     } catch (ZipException e) {
                         e.printStackTrace();
                     }
                 } catch (IOException e) {
-                    GoBrushPlugin.getPlugin().getLogger().log(Level.SEVERE, "Could not download brushes. Please download them manually and put them into /plugins/goBrush/brushes");
-                    GoBrushPlugin.getPlugin().getLogger().log(Level.SEVERE, "https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true");
+                    GoBrushPlugin.getPlugin().getLogger().log(
+                            Level.SEVERE,
+                            "Could not download brushes. Please download them manually and put them into /plugins/goBrush/brushes"
+                    );
+                    GoBrushPlugin.getPlugin().getLogger().log(
+                            Level.SEVERE,
+                            "https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true"
+                    );
                 }
             }
         } catch (Exception ex) {
-            GoBrushPlugin.getPlugin().getLogger().log(Level.SEVERE, "Could not download brushes. Please download them manually here and put them into /plugins/goBrush/brushes");
-            GoBrushPlugin.getPlugin().getLogger().log(Level.SEVERE, "https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true");
+            GoBrushPlugin.getPlugin().getLogger().log(
+                    Level.SEVERE,
+                    "Could not download brushes. Please download them manually here and put them into /plugins/goBrush/brushes"
+            );
+            GoBrushPlugin.getPlugin().getLogger().log(
+                    Level.SEVERE,
+                    "https://github.com/Arcaniax-Development/goBrush-Assets/blob/main/brushes.zip?raw=true"
+            );
         }
     }
 

@@ -1,32 +1,25 @@
 /*
- *                              ____                 _
- *                             |  _ \               | |
- *                   __ _  ___ | |_) |_ __ _   _ ___| |__
- *                  / _` |/ _ \|  _ <| '__| | | / __| '_ \
- *                 | (_| | (_) | |_) | |  | |_| \__ \ | | |
- *                  \__, |\___/|____/|_|   \__,_|___/_| |_|
- *                   __/ |
- *                  |___/
+ * goBrush is designed to streamline and simplify your mountain building experience.
+ * Copyright (C) Arcaniax-Development
+ * Copyright (C) Arcaniax team and contributors
  *
- *    goBrush is designed to streamline and simplify your mountain building experience.
- *                            Copyright (C) 2021 Arcaniax
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.arcaniax.gobrush.object;
 
 import com.arcaniax.gobrush.GoBrushPlugin;
+import com.arcaniax.gobrush.util.BlockUtils;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.WorldEdit;
@@ -96,7 +89,9 @@ public class HeightMapExporter {
             for (int z = 0; z < (maxZ - minZ); z++) {
                 BukkitPlayer bp = new BukkitPlayer(p);
                 EditSession editsession = WorldEdit.getInstance().getSessionManager().get(bp).createEditSession(bp);
-                int y = editsession.getHighestTerrainBlock(x + minX, z + minZ, 0, 255);
+                int y = editsession.getHighestTerrainBlock(x + minX, z + minZ,
+                        BlockUtils.getWorldMin(bp.getPlayer().getLocation()), BlockUtils.getWorldMax(bp.getPlayer().getLocation())
+                );
                 if (y > highest) {
                     highest = y;
                 }
@@ -115,7 +110,9 @@ public class HeightMapExporter {
             for (int z = 0; z < (maxZ - minZ); z++) {
                 BukkitPlayer bp = new BukkitPlayer(p);
                 EditSession editsession = WorldEdit.getInstance().getSessionManager().get(bp).createEditSession(bp);
-                int y = editsession.getHighestTerrainBlock(x + minX, z + minZ, 0, 255);
+                int y = editsession.getHighestTerrainBlock(x + minX, z + minZ,
+                        BlockUtils.getWorldMin(bp.getPlayer().getLocation()), BlockUtils.getWorldMax(bp.getPlayer().getLocation())
+                );
                 int i = (int) (((double) (y - lowest) / (double) height) * (double) 255);
                 int rgb = i; //red
                 rgb = (rgb << 8) + i;//green
@@ -128,7 +125,7 @@ public class HeightMapExporter {
         File f = new File(GoBrushPlugin.getPlugin().getDataFolder() + "/brushes/" + name + ".png");
         try {
             ImageIO.write(img, "PNG", f);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 
@@ -142,4 +139,5 @@ public class HeightMapExporter {
         graphic.dispose();
         return pattern;
     }
+
 }

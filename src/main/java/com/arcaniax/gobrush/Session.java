@@ -1,36 +1,28 @@
 /*
- *                              ____                 _
- *                             |  _ \               | |
- *                   __ _  ___ | |_) |_ __ _   _ ___| |__
- *                  / _` |/ _ \|  _ <| '__| | | / __| '_ \
- *                 | (_| | (_) | |_) | |  | |_| \__ \ | | |
- *                  \__, |\___/|____/|_|   \__,_|___/_| |_|
- *                   __/ |
- *                  |___/
+ * goBrush is designed to streamline and simplify your mountain building experience.
+ * Copyright (C) Arcaniax-Development
+ * Copyright (C) Arcaniax team and contributors
  *
- *    goBrush is designed to streamline and simplify your mountain building experience.
- *                            Copyright (C) 2021 Arcaniax
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *     This program is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *     This program is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU General Public License for more details.
- *
- *     You should have received a copy of the GNU General Public License
- *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 package com.arcaniax.gobrush;
 
-import com.arcaniax.gobrush.object.Config;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.arcaniax.gobrush.object.Brush;
 import com.arcaniax.gobrush.object.BrushMenu;
 import com.arcaniax.gobrush.object.BrushPlayer;
+import com.arcaniax.gobrush.object.Config;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -72,12 +64,6 @@ public class Session {
     }
 
     /**
-     * This method initializes the HashMap containing the BrushHistory objects.
-     * This method should only be called upon plugin startup, as it will clear
-     * all of the history lists.
-     */
-
-    /**
      * This method initializes the HashMap containing the valid brushes. Calling
      * this method will reset the loaded brushes, only use this method when
      * enabling the plugin.
@@ -93,11 +79,15 @@ public class Session {
             return 0;
         }
         File[] brushes = dir.getAbsoluteFile().listFiles();
-        IntStream.range(0, brushes.length).parallel().forEach(value -> { File file = brushes[value];
-            if ((!file.getAbsoluteFile().isDirectory()) && ((file.getName().endsWith(".png")) || (file.getName().endsWith(".jpg")) || (file.getName().endsWith(".jpeg")))) {
+        IntStream.range(0, brushes.length).parallel().forEach(value -> {
+            File file = brushes[value];
+            if ((!file.getAbsoluteFile().isDirectory()) && ((file.getName().endsWith(".png")) || (file
+                    .getName()
+                    .endsWith(".jpg")) || (file.getName().endsWith(".jpeg")))) {
                 Session.addBrush(new Brush(file.getName()));
                 amountOfValidBrushes.getAndIncrement();
-            }});
+            }
+        });
         return amountOfValidBrushes.get();
     }
 
@@ -119,7 +109,6 @@ public class Session {
      * brushes. This method should not be executed during runtime as it will
      * generate a new inventory, leaving the old one disconnected.
      */
-    @SuppressWarnings("unchecked")
     public static void initializeBrushMenu() {
         List<Brush> brushes = new ArrayList<>();
         for (Map.Entry<String, Brush> brush : validBrushes.entrySet()) {
@@ -135,7 +124,7 @@ public class Session {
      *
      * @param uuid The UUID of the player that needs to be checked.
      * @return True if the HashMap of players contains the provided UUID, false
-     * otherwise.
+     *         otherwise.
      */
     public static boolean containsBrushPlayer(UUID uuid) {
         return brushPlayers.containsKey(uuid);
@@ -148,7 +137,7 @@ public class Session {
      * @param uuid The UUID of the player of which the BrushPlayer object needs
      *             to be returned of.
      * @return The BrushPlayer object of a player, or null when the uuid is not
-     * in the HashMap.
+     *         in the HashMap.
      */
     public static BrushPlayer getBrushPlayer(UUID uuid) {
         if (containsBrushPlayer(uuid)) {
@@ -165,7 +154,7 @@ public class Session {
      * @param uuid The UUID of the new player that needs to be added to the
      *             HashMap of player configurations.
      * @return True if the user was added successfully, false if it was not
-     * added successfully (this occurs when the UUID is already in the HashMap).
+     *         added successfully (this occurs when the UUID is already in the HashMap).
      */
     public static boolean addBrushPlayer(UUID uuid) {
         if (!containsBrushPlayer(uuid)) {
@@ -183,7 +172,7 @@ public class Session {
      * @param uuid The UUID of the player whose BrushPlayer object needs to be
      *             removed from the HashMap of player configurations.
      * @return True if the player's BrushPlayer was removed from the HashMap,
-     * false otherwise.
+     *         false otherwise.
      */
     public static boolean removeBrushPlayer(UUID uuid) {
         if (containsBrushPlayer(uuid)) {
@@ -195,27 +184,11 @@ public class Session {
     }
 
     /**
-     * This method checks if a player has an undo history.
-     *
-     * @param uuid The UUID of the player that needs to be checked.
-     * @return True if the player has an undo history, false otherwise.
-     */
-
-    /**
-     * This method fetches the undo history of a player from their UUID.
-     *
-     * @param uuid The UUID of the player of which the undo history needs to be
-     * returned.
-     * @return The undo history in a List or null when no undo history is
-     * present.
-     */
-
-    /**
      * This method checks if the String provided is a name of a valid brush.
      *
      * @param name The name of a brush that needs to be checked.
      * @return True if the HashMap of valid brushes contains the provided name,
-     * false otherwise.
+     *         false otherwise.
      */
     public static boolean containsBrush(String name) {
         return validBrushes.containsKey(name);
@@ -250,8 +223,8 @@ public class Session {
      * @param brush the Brush object that needs to be added. The key will be the
      *              brush name.
      * @return True if the brush was added successfully, false if it was not
-     * added successfully (this occurs when the brush is already in the
-     * HashMap).
+     *         added successfully (this occurs when the brush is already in the
+     *         HashMap).
      */
     public static boolean addBrush(Brush brush) {
         if (!containsBrush(brush.getName())) {
@@ -282,7 +255,7 @@ public class Session {
      * configuration file.
      *
      * @return The config object that contains all data from the configuration
-     * file.
+     *         file.
      */
     public static Config getConfig() {
         return config;
@@ -308,8 +281,6 @@ public class Session {
 
     /**
      * This method gets the BrushMenu object that stores all brushes.
-     *
-     * @return
      */
     public static BrushMenu getBrushMenu() {
         return brushMenu;
