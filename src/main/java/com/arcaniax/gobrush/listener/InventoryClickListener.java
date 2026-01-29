@@ -48,8 +48,8 @@ public class InventoryClickListener implements Listener {
 
     private static final String PERMISSION_BYPASS_MAXSIZE = "gobrush.bypass.maxsize";
     private static final String PERMISSION_BYPASS_MAXINTENSITY = "gobrush.bypass.maxintensity";
-    private static final String MAIN_MENU_INVENTORY_TITLE = "goBrush Menu";
-    private static final String BRUSH_MENU_INVENTORY_TITLE = "goBrush Brushes";
+    private static final String MAIN_MENU_INVENTORY_TITLE = "§f𱌓䭬§8goBrush Menu";
+    private static final String BRUSH_MENU_INVENTORY_TITLE = "§f𰁳䭬§8goBrush Brushes";
     private static int amountOfValidBrushes;
 
     @EventHandler(priority = EventPriority.NORMAL)

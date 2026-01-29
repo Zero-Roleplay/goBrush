@@ -21,6 +21,8 @@ package com.arcaniax.gobrush.object;
 import com.arcaniax.gobrush.GoBrushPlugin;
 import com.arcaniax.gobrush.Session;
 import com.arcaniax.gobrush.util.XMaterial;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -46,7 +48,7 @@ import java.util.stream.IntStream;
 public class BrushPage {
 
     /* Attributes */
-    private static final String BRUSH_MENU_INVENTORY_TITLE = "&1goBrush Brushes";
+    private static final String BRUSH_MENU_INVENTORY_TITLE = "&8goBrush Brushes";
     private static final ItemStack GRAY_GLASS_PANE = createItem(
             XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial(),
             (short) XMaterial.GRAY_STAINED_GLASS_PANE.data,
@@ -73,9 +75,9 @@ public class BrushPage {
     public BrushPage(List<Brush> brushes, int pageNumber, int pageCount) {
 
         this.PAGE_NUMBER = pageNumber;
-        this.INVENTORY = Bukkit.createInventory(null, 54, ChatColor.translateAlternateColorCodes(
-                '&',
-                BRUSH_MENU_INVENTORY_TITLE + "&8 | &5Page " + (pageNumber + 1)
+        this.INVENTORY = Bukkit.createInventory(null, 54,
+                Component.text("§f𰁳䭬").font(Key.key("gui")).append(Component.text(ChatColor.translateAlternateColorCodes('&',
+                        BRUSH_MENU_INVENTORY_TITLE + " | Page " + (pageNumber + 1)))
         ));
 
         for (int i = 0; i < 54; i++) {

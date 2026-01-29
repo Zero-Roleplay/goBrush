@@ -19,6 +19,8 @@
 package com.arcaniax.gobrush.util;
 
 import com.arcaniax.gobrush.object.BrushPlayer;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,7 +39,7 @@ import java.util.List;
  */
 public class GuiGenerator {
 
-    private static final String MAIN_MENU_INVENTORY_TITLE = "&1goBrush Menu";
+    private static final String MAIN_MENU_INVENTORY_TITLE = "&8goBrush Menu";
     private static final ItemStack GRAY_GLASS_PANE = createItem(
             XMaterial.GRAY_STAINED_GLASS_PANE.parseMaterial(),
             (short) XMaterial.GRAY_STAINED_GLASS_PANE.data,
@@ -80,7 +82,8 @@ public class GuiGenerator {
         Inventory mainMenu = Bukkit.createInventory(
                 null,
                 27,
-                ChatColor.translateAlternateColorCodes('&', MAIN_MENU_INVENTORY_TITLE)
+                Component.text("§f𱌓䭬").font(Key.key("gui")).append(Component.text(ChatColor.translateAlternateColorCodes('&',
+                        MAIN_MENU_INVENTORY_TITLE)))
         );
         for (int i = 0; i < 27; i++) {
             mainMenu.setItem(i, GRAY_GLASS_PANE);
