@@ -7,19 +7,25 @@ plugins {
    `java-library`
 
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "6.25.0"
-    id("org.ajoberstar.grgit") version "5.3.0"
+    id("com.diffplug.spotless") version "8.5.1"
+    id("org.ajoberstar.grgit") version "5.3.3"
 
     idea
     eclipse
 }
 
 the<JavaPluginExtension>().toolchain {
-    languageVersion.set(JavaLanguageVersion.of(17))
+    languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 configurations.all {
-    attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 17)
+    attributes.attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, 21)
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 tasks.compileJava.configure {
@@ -31,17 +37,17 @@ repositories {
     maven { url = uri("https://oss.sonatype.org/content/repositories/snapshots") }
     maven { url = uri("https://libraries.minecraft.net/") }
     maven { url = uri("https://s01.oss.sonatype.org/content/repositories/snapshots/") }
-    maven { url = uri("https://papermc.io/repo/repository/maven-public/") }
+    maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 }
 
 dependencies {
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.44"))
-    compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
-    compileOnly("net.md-5:bungeecord-api:1.20-R0.2")
+    implementation(platform("com.intellectualsites.bom:bom-newest:1.56"))
+    compileOnly("io.papermc.paper:paper-api:1.21.1-R0.1-SNAPSHOT")
+    compileOnly("net.md-5:bungeecord-api:1.21-R0.4")
     compileOnly("com.mojang:authlib:1.5.25")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit")
     implementation("net.lingala.zip4j:zip4j:2.11.5")
-    implementation("dev.notmyfault.serverlib:ServerLib")
+    implementation("dev.notmyfault.serverlib:ServerLib:2.3.7")
     implementation("org.bstats:bstats-bukkit:3.1.0")
     implementation("org.bstats:bstats-base:3.1.0")
     implementation("io.papermc:paperlib:")
@@ -83,7 +89,7 @@ tasks.named<ShadowJar>("shadowJar") {
             include(dependency("net.lingala.zip4j:zip4j"))
         }
         relocate("org.incendo.serverlib", "com.arcaniax.gobrush.serverlib") {
-            include(dependency("dev.notmyfault.serverlib:ServerLib:2.3.6"))
+            include(dependency("dev.notmyfault.serverlib:ServerLib:2.3.7"))
         }
         relocate("org.bstats", "com.arcaniax.gobrush.metrics") {
             include(dependency("org.bstats:bstats-base"))
