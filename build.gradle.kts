@@ -44,7 +44,7 @@ dependencies {
     implementation("org.bstats:bstats-base:3.2.1")
 }
 
-version = "3.8.0-SNAPSHOT"
+version = "3.8.0"
 
 spotless {
     java {
